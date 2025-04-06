@@ -35,7 +35,7 @@ Este projeto utiliza várias bibliotecas Python para garantir a funcionalidade d
 ## Entrar na pasta do projeto:
 
 ```bash
-cd sistema_academico
+cd pasta_onde_o_projetofoibaixado
 ```
 
 ## Criar e ativar um ambiente virtual (opcional, mas recomendado):
