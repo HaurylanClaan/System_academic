@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QMessageBox
-import sqlite3
 from aluno import Aluno
+import sqlite3
 
 class CadastroAlunoWindow(QWidget):
     def __init__(self, callback=None):
@@ -11,8 +11,8 @@ class CadastroAlunoWindow(QWidget):
 
     def init_ui(self):
         layout = QVBoxLayout()
-
         self.campos = {}
+
         labels = {
             "nome": "Nome Completo",
             "identidade": "Número de Identidade",
@@ -22,30 +22,21 @@ class CadastroAlunoWindow(QWidget):
         }
 
         for chave, texto in labels.items():
-            label = QLabel(texto)
+            layout.addWidget(QLabel(texto))
             campo = QLineEdit()
-            campo.setObjectName(chave)
             self.campos[chave] = campo
-            layout.addWidget(label)
             layout.addWidget(campo)
 
-        self.botao_salvar = QPushButton("Salvar")
-        self.botao_salvar.clicked.connect(self.salvar_aluno)
-        layout.addWidget(self.botao_salvar)
+        botao = QPushButton("Salvar")
+        botao.clicked.connect(self.salvar)
+        layout.addWidget(botao)
 
         self.setLayout(layout)
 
-        # Atalhos com ENTER
-        self.campos["nome"].returnPressed.connect(lambda: self.campos["identidade"].setFocus())
-        self.campos["identidade"].returnPressed.connect(lambda: self.campos["nascimento"].setFocus())
-        self.campos["nascimento"].returnPressed.connect(lambda: self.campos["nome_mae"].setFocus())
-        self.campos["nome_mae"].returnPressed.connect(lambda: self.campos["nome_pai"].setFocus())
-        self.campos["nome_pai"].returnPressed.connect(self.salvar_aluno)
-
-    def salvar_aluno(self):
-        dados = {k: self.campos[k].text().strip() for k in self.campos}
+    def salvar(self):
+        dados = {k: campo.text().strip() for k, campo in self.campos.items()}
         if not all(dados.values()):
-            QMessageBox.critical(self, "Erro", "Todos os campos são obrigatórios.")
+            QMessageBox.warning(self, "Erro", "Todos os campos são obrigatórios.")
             return
 
         aluno = Aluno(**dados)
@@ -59,14 +50,10 @@ class CadastroAlunoWindow(QWidget):
             """, (aluno.nome, aluno.nome_normalizado, aluno.identidade, aluno.nascimento, aluno.nome_mae, aluno.nome_pai))
             conn.commit()
             conn.close()
+
             QMessageBox.information(self, "Sucesso", "Aluno cadastrado com sucesso!")
             if self.callback:
                 self.callback(aluno)
             self.close()
         except sqlite3.IntegrityError as e:
-            if "UNIQUE constraint failed: alunos.nome_normalizado" in str(e):
-                QMessageBox.warning(self, "Erro", "Já existe um aluno com esse nome.")
-            elif "UNIQUE constraint failed: alunos.identidade" in str(e):
-                QMessageBox.warning(self, "Erro", "Já existe um aluno com essa identidade.")
-            else:
-                QMessageBox.critical(self, "Erro", f"Erro ao cadastrar: {e}")
+            QMessageBox.critical(self, "Erro", f"Erro ao salvar: {e}")

@@ -1,143 +1,135 @@
 # Sistema Acadêmico
 
-Este é um sistema acadêmico para gerenciar e calcular informações relacionadas a alunos e disciplinas. Ele permite realizar o cadastro de alunos, lançamento de notas, cadastro de disciplinas e cálculo da média dos alunos.
+Este é um sistema acadêmico desenvolvido com **Python + PyQt5 + SQLite**, que permite gerenciar informações de alunos, disciplinas, notas e médias. A interface gráfica facilita o uso, sendo ideal para fins educacionais ou gestão acadêmica básica.
 
-## Funcionalidades
+---
 
-- **Cadastro de Alunos**: Registre informações dos alunos no sistema.
-- **Lançamento de Notas**: Adicione e atualize as notas dos alunos em suas respectivas disciplinas.
-- **Cadastro de Disciplinas**: Adicione novas disciplinas ao sistema.
-- **Cálculo de Média**: Calcule a média das notas dos alunos nas disciplinas cadastradas.
+## ✅ Funcionalidades
 
-## Bibliotecas e Dependências
+- **Cadastro de Alunos**: Registre informações dos alunos no banco de dados.
+- **Cadastro de Disciplinas**: Insira disciplinas que os alunos podem cursar.
+- **Lançamento de Notas**: Associe notas aos alunos em cada disciplina.
+- **Cálculo de Média**: Cálculo automático da média a partir das notas.
+- **Visualização de Alunos, Disciplinas e Notas**: Interface amigável para listar todos os dados inseridos.
 
-Este projeto utiliza várias bibliotecas Python para garantir a funcionalidade do sistema. As dependências incluem:
+---
 
-- **altgraph==0.17.4**: Usado para análise de gráficos de dependência.
-- **numpy==2.2.4**: Biblioteca para computação numérica (usada no cálculo de médias).
-- **packaging==24.2**: Para a manipulação de pacotes.
-- **pefile==2023.2.7**: Para análise de arquivos PE (Portable Executable).
-- **pyinstaller==6.12.0**: Para gerar executáveis do Python.
-- **pyinstaller-hooks-contrib==2025.2**: Hooks para bibliotecas utilizadas com PyInstaller.
-- **PyQt5==5.15.11**: Biblioteca gráfica para criar interfaces de usuário (UI).
-- **PyQt5-Qt5==5.15.2**: Qt5 bindings para PyQt5.
-- **PyQt5_sip==12.17.0**: Interface de binding de Python para o Qt.
-- **pywin32-ctypes==0.2.3**: Funcionalidades específicas para Windows.
-- **setuptools==78.1.0**: Usado para empacotar e distribuir pacotes Python.
+## 🧰 Tecnologias e Dependências
 
-## Instalação
+Este projeto depende de:
 
-1. **Clone este repositório** para sua máquina local:
+- `PyQt5==5.15.11` – Criação da interface gráfica
+- `numpy==2.2.4` – Cálculo de médias
+- `sqlite3` (nativo) – Banco de dados leve e embutido
+- Outras dependências relacionadas ao uso com PyInstaller (para gerar executáveis)
 
-   ```bash
-   git clone https://github.com/HaurylanClaan/sistema_academico.git
+Veja todas no `requirements.txt`.
 
-## Entrar na pasta do projeto:
+---
 
+## 💻 Instalação
+
+### 1. Clone o repositório:
 ```bash
-cd pasta_onde_o_projetofoibaixado
+git clone https://github.com/HaurylanClaan/sistema_academico.git
 ```
 
-## Criar e ativar um ambiente virtual (opcional, mas recomendado):
-
-### No Windows:
+### 2. Acesse a pasta do projeto:
 ```bash
-python -m venv venv
-.\venv\Scripts\activate
+cd sistema_academico
 ```
 
-### No Linux/Mac:
+### 3. Crie e ative um ambiente virtual (recomendado):
+
+**Linux/macOS:**
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
+**Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
 
-## Instalar as dependências:
-
+### 4. Instale as dependências:
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## Como Usar
+## ▶️ Como Usar
 
-### Executar o Sistema e iniciar a interface gráfica:
-Após a instalação das dependências, você pode iniciar o sistema acadêmico executando o script principal do projeto `sistema_academico.py`.
+Para iniciar o sistema, execute o script principal:
+```bash
+python src/sistema_academico.py
+```
+
+A interface gráfica será exibida com as seguintes opções:
+
+1. Cadastrar Disciplina
+2. Ver Disciplinas Cadastradas
+3. Cadastrar Aluno
+4. Ver Alunos Cadastrados
+5. Cadastrar Nota
+6. Ver Notas por Aluno
 
 
 ---
 
-## Funcionalidades
+## 🧭 Fluxo Sugerido de Uso
 
-- **Cadastrar Alunos**: No menu de cadastro de alunos, insira os dados solicitados, como nome, matrícula e dados adicionais.
-- **Cadastrar Disciplinas**: Registre as disciplinas que os alunos cursam e associe-as aos respectivos alunos.
-- **Lançamento de Notas**: Insira as notas dos alunos nas disciplinas correspondentes e visualize os resultados.
-- **Cálculo de Média**: O sistema calculará automaticamente a média dos alunos com base nas notas lançadas.
+1. Cadastre os alunos
+2. Cadastre as disciplinas
+3. Lance as notas dos alunos
+4. Visualize a média automaticamente calculada
 
----
-
-## Exemplo de Execução
-
-Ao executar o script, você verá uma interface gráfica onde poderá interagir com o sistema. O fluxo básico é:
-
-1. Cadastro de Alunos  
-2. Cadastro de Disciplinas  
-3. Lançamento de Notas  
-4. Cálculo de Média  
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-PROJETO_SISTEMA_ACADEMICO/
+sistema_academico/
+├── docs/
 │
-├── 📁 ambiente_virtual/           # Ambiente virtual Python (venv)
-│   ├── 📁 Include/
-│   ├── 📁 Lib/
-│   ├── 📁 Scripts/
-│   └── 📄 pyvenv.cfg
+├── src/                  # Código-fonte principal
+│   ├── __init__.py
+│   ├── aluno.py
+│   ├── cadastro_aluno.py
+│   ├── cadastro_disciplina.py
+│   ├── cadastro_nota.py
+│   ├── calculo_media.py
+│   ├── calculos.py
+│   ├── criar_banco.py
+│   ├── database.py
+│   ├── disciplina.py
+│   ├── lancamento_notas.py
+│   ├── lista_alunos.py
+│   ├── lista_disciplinas.py
+│   ├── sistema_academico.py
+│   ├── ver_notas.py
+│   └── sistema_academico.db
 │
-├── 📁 docs/                       # Documentação do projeto
-│   └── 📁 src/
-│       ├── 📄 index.html
-│       ├── 📄 search.js
-│       └── 📄 src.html
-│
-├── 📁 src/                        # Código-fonte principal do sistema
-│   ├── 📁 __pycache__/            # Arquivos cache do Python
-│   ├── 📄 __init__.py             # Inicializa o pacote Python
-│   ├── 📄 aluno.py                # Cadastro e manipulação de alunos
-│   ├── 📄 calculos.py             # Cálculos diversos (ex: médias)
-│   ├── 📄 disciplina.py           # Cadastro de disciplinas
-│   ├── 📄 lancamento_notas.py     # Lançamento de notas
-│   └── 📄 sistema_academico.py    # Arquivo principal do sistema
-│
-├── 📄 requirements.txt            # Lista de dependências do projeto
-└── 📄 .gitignore                  # Arquivos/pastas ignorados pelo Git
+├── venv/                 # Ambiente virtual Python
+├── requirements.txt      # Dependências do projeto
+└── README.md
 ```
 
 
+---
 
-## Contribuindo
+## 🙌 Contribuindo
 
-Se você gostaria de contribuir para este projeto, siga estas etapas:
-
-1. Faça um fork do repositório.  
-2. Crie uma nova branch:
-   ```bash
-   git checkout -b feature/novidade
-   ```
-3. Faça suas alterações e commit.
-4. Envie suas mudanças para o repositório remoto:
-   ```bash
-   git push origin feature/novidade
-   ```
-5. Abra um pull request.
+1. Faça um fork
+2. Crie uma branch: `git checkout -b minha-mudanca`
+3. Faça commit: `git commit -m "minha melhoria"`
+4. Push para o repositório: `git push origin minha-mudanca`
+5. Abra um pull request
 
 ---
 
-## Licença
-Este projeto está licenciado sob os termos da [MIT License](./LICENSE).
-veja o arquivo LICENSE para mais detalhes.
+## 📄 Licença
+
+Distribuído sob a licença MIT. Veja `LICENSE` para mais detalhes.

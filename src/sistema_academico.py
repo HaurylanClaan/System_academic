@@ -1,74 +1,123 @@
-# Cadastro de disciplinas - integração com as outras pastas
-# listas_disciplinas; disciplina.py; cadastro_disciplina
-from PyQt5.QtWidgets import (
-    QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
-)
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLabel
+from cadastro_aluno import CadastroAlunoWindow
 from cadastro_disciplina import CadastroDisciplinaWindow
 from lista_disciplinas import ListaDisciplinasWindow
-from disciplina import Disciplina
+from database import carregar_disciplinas, inicializar_banco
+from lista_alunos import ListaAlunosWindow
+from database import carregar_alunos
+from cadastro_nota import CadastroNotaWindow
+from ver_notas import VerNotasWindow
 
 
 class MainWindow(QWidget):
+    from ver_notas import VerNotasWindow
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("Sistema Acadêmico")
         self.setGeometry(100, 100, 600, 400)
 
-        # Lista principal onde todas as disciplinas cadastradas são armazenadas
-        self.disciplinas = []
+        self.disciplinas = carregar_disciplinas()  # ← Carrega do banco
 
         layout = QVBoxLayout()
-
-        # Texto de boas-vindas
-        self.label = QLabel("Bem-vindo ao Sistema Acadêmico", self)
-        layout.addWidget(self.label)
-
-        # Botão para cadastrar aluno (ainda será implementado)
-        self.btn_cadastrar_aluno = QPushButton("Cadastrar Aluno", self)
-        layout.addWidget(self.btn_cadastrar_aluno)
+        layout.addWidget(QLabel("Bem-vindo ao Sistema Acadêmico"))
 
         # Botão para cadastrar disciplina
-        self.btn_cadastrar_disciplina = QPushButton("Cadastrar Disciplina", self)
-        self.btn_cadastrar_disciplina.clicked.connect(self.abrir_cadastro_disciplina)
-        layout.addWidget(self.btn_cadastrar_disciplina)
+        btn_cadastrar_disciplina = QPushButton("Cadastrar Disciplina")
+        btn_cadastrar_disciplina.clicked.connect(self.abrir_cadastro_disciplina)
+        layout.addWidget(btn_cadastrar_disciplina)
 
-        # Botão para ver disciplinas cadastradas
-        self.btn_ver_disciplinas = QPushButton("Ver Disciplinas Cadastradas", self)
-        self.btn_ver_disciplinas.clicked.connect(self.abrir_lista_disciplinas)
-        layout.addWidget(self.btn_ver_disciplinas)
+        # Botão para listar disciplinas
+        btn_listar = QPushButton("Ver Disciplinas Cadastradas")
+        btn_listar.clicked.connect(self.abrir_lista_disciplinas)
+        layout.addWidget(btn_listar)
 
-        # Botões ainda não implementados
-        self.btn_lancar_notas = QPushButton("Lançar Notas", self)
-        layout.addWidget(self.btn_lancar_notas)
+        # Botão para cadastrar aluno
+        btn_cadastrar_aluno = QPushButton("Cadastrar Aluno")
+        btn_cadastrar_aluno.clicked.connect(self.abrir_cadastro_aluno)
+        layout.addWidget(btn_cadastrar_aluno)
 
-        self.btn_calcular_media = QPushButton("Calcular Média", self)
-        layout.addWidget(self.btn_calcular_media)
-
+        btn_listar_alunos = QPushButton("Ver Alunos Cadastrados")
+        btn_listar_alunos.clicked.connect(self.abrir_lista_alunos)
+        layout.addWidget(btn_listar_alunos)
         self.setLayout(layout)
 
-    # Abre a janela de cadastro de disciplina, passando a lista atual para verificação
+        btn_cadastrar_nota = QPushButton("Cadastrar Nota")
+        btn_cadastrar_nota.clicked.connect(self.abrir_cadastro_nota)
+        layout.addWidget(btn_cadastrar_nota)
+
+        # Botão para ver notas por aluno
+        btn_ver_notas = QPushButton("Ver Notas por Aluno")
+        btn_ver_notas.clicked.connect(self.abrir_ver_notas)
+        layout.addWidget(btn_ver_notas)
+
+
     def abrir_cadastro_disciplina(self):
-        self.janela_cadastro = CadastroDisciplinaWindow(self.adicionar_disciplina, self.disciplinas)
+        self.janela_cadastro = CadastroDisciplinaWindow(callback=self.adicionar_disciplina)
         self.janela_cadastro.show()
 
-    # Adiciona nova disciplina à lista principal
     def adicionar_disciplina(self, disciplina):
         self.disciplinas.append(disciplina)
 
-    # Abre a janela de listagem das disciplinas, com a função de remoção incluída
     def abrir_lista_disciplinas(self):
         self.janela_lista = ListaDisciplinasWindow(self.disciplinas, self.remover_disciplina)
         self.janela_lista.show()
 
-    # Remove uma disciplina da lista
     def remover_disciplina(self, disciplina):
         self.disciplinas.remove(disciplina)
 
+    def abrir_cadastro_aluno(self):
+        self.janela_aluno = CadastroAlunoWindow()
+        self.janela_aluno.show()
 
-# Inicializa a aplicação
-if __name__ == '__main__':
+    def abrir_lista_alunos(self):
+        alunos = carregar_alunos()
+        self.janela_lista_alunos = ListaAlunosWindow(alunos)
+        self.janela_lista_alunos.show()
+
+    def abrir_cadastro_nota(self):
+        self.janela_nota = CadastroNotaWindow()
+        self.janela_nota.show()
+    def abrir_ver_notas(self):
+        self.janela_ver_notas = VerNotasWindow()
+        self.janela_ver_notas.show()
+
+
+# Ponto de entrada
+if __name__ == "__main__":
+    inicializar_banco()
     app = QApplication([])
+    # Estilo global
+    style = """
+        QWidget {
+            background-color: #f8f9fa;
+            font-family: Arial;
+            font-size: 14px;
+        }
+
+        QPushButton {
+            background-color: #007bff;
+            color: white;
+            padding: 8px;
+            border-radius: 5px;
+        }
+
+        QPushButton:hover {
+            background-color: #0056b3;
+        }
+
+        QLabel {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        QLineEdit, QComboBox {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    """
+    app.setStyleSheet(style)
     window = MainWindow()
     window.show()
     app.exec_()
